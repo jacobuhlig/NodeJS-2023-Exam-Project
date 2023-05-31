@@ -1,0 +1,83 @@
+<mj-attributes>
+  <mj-class
+    name="big-text"
+    align="center"
+    font-weight="bold"
+    font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    color="#fff"
+    font-size="30px"
+    padding-left="25px"
+    padding-right="25px"
+  />
+
+  <mj-class
+    name="text"
+    align="center"
+    color="#fff"
+    font-size="18px"
+    font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    padding-left="25px"
+    padding-right="25px"
+    line-height="26px"
+  />
+
+  <mj-class
+    name="small-text"
+    align="center"
+    font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    background-color="#262626"
+    color="#fff"
+    font-size="15px"
+    padding-left="25px"
+    padding-right="25px"
+  />
+
+  <mj-class
+    name="tiny-text"
+    align="center"
+    background-color="#262626"
+    color="#fff"
+    font-size="12px"
+    font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    line-height="20px"
+  />
+
+  <mj-class
+    name="btn"
+    align="center"
+    font-size="22px"
+    background-color="#262626"
+    border-radius="4px"
+    color="#fff"
+    font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+  />
+
+  <mj-class
+    name="main-section"
+    background-color="#262626"
+    vertical-align="top"
+    padding-bottom="20px"
+    padding-top="0"
+  />
+
+  <mj-class
+    name="main-section-image"
+    background-color="#cccccc"
+    vertical-align="top"
+    padding-bottom="0"
+    padding-top="0"
+  />
+
+  <mj-class
+    name="bottom-section"
+    background-color="#262626"
+    vertical-align="top"
+    padding-bottom="20px"
+    padding-top="20px"
+  />
+</mj-attributes>

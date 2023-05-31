@@ -1,0 +1,19 @@
+<mj-section
+  background-color="#262626"
+  padding-bottom="0px"
+  padding-top="0"
+>
+  <mj-column vertical-align="top" width="100%">
+    <mj-text
+      align="center"
+      padding="50px 0 35px 0"
+      font-size="30px"
+      font-weight="bold"
+      font-family="Trebuchet MS, Arial, sans-serif"
+      background-color="#262626"
+      color="#fff"
+    >
+      Hi {{name}},
+    </mj-text>
+  </mj-column>
+</mj-section>

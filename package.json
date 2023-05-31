@@ -1,0 +1,33 @@
+{
+  "name": "exam_project-backend-mac",
+  "version": "1.0.0",
+  "description": "Exam project - Full Stack Development with Node.js",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "create-db": "node ./Database/initDB.js",
+    "compile-email": "mjml -r ./util/nodemailer/forgot-password.mjml -o ./util/nodemailer/compiled-template.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.7.0",
+    "express-session": "^1.17.3",
+    "fs": "^0.0.1-security",
+    "google-books-search": "^0.3.1",
+    "handlebars": "^4.7.7",
+    "helmet": "^7.0.0",
+    "mjml": "^4.14.1",
+    "mysql2": "^3.3.3",
+    "nodemailer": "^6.9.3",
+    "sequelize": "^6.31.1",
+    "socket.io": "^4.6.1"
+  }
+}
