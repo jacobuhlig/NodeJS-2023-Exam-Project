@@ -1,5 +1,6 @@
 export function authorizationGuard(req, res, next) {
-  if (!req.session.user) {
+  console.log('Session:', req.session);
+  if (!req.session) {
     return res.status(403).send({ message: "You are not authorized to see this page - General" });
   }
   next();
@@ -15,8 +16,16 @@ export function adminGuard(req, res, next) {
 
 export function adminAndCurrentUserGuard(req, res, next) {
   const { id } = req.params;
+  console.log(id); 
 
-  if (req.session.role !== 'admin' && req.session.user !== Number(id)) {
+  if (!req.session.user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  console.log(req.session.user.id); 
+  console.log(req.session.user.role); 
+
+  if (req.session.user.role !== 'admin' && req.session.user.id !== Number(id)) {
       return res.status(403).json({ message: 'Access denied' });
     }
   next();

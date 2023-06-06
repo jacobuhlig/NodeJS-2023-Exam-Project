@@ -1,8 +1,10 @@
 import { Router } from 'express';
 import bookReviewRoutes from './bookReviews.js';
+import bookFavoriteRoutes from './bookFavorites.js';
 import { authorizationGuard, adminGuard } from '../middleware/auth-middleware.js';
 import { 
-    searchByTitle, 
+    searchByTitleOrAuthor, 
+    searchByTitleOrAuthor1, 
     searchById, 
     getFans, 
     getAllBooks, 
@@ -28,9 +30,10 @@ router.put('/:id', authorizationGuard, adminGuard, updateBook);
 router.delete('/:id', authorizationGuard, adminGuard, deleteBook);
 
 
-
+// authorizationGuard
 // GET /books/search/:title
-router.get('/search/title/:title', authorizationGuard, searchByTitle);
+router.get('/search/title-or-author/:title', authorizationGuard, searchByTitleOrAuthor);
+router.get('/search/title-or-author1/:title', authorizationGuard, searchByTitleOrAuthor1);
 
 // GET /books/search/:id
 router.get('/search/id/:id', authorizationGuard, searchById);
@@ -43,6 +46,9 @@ router.get('/search/:id/fans', authorizationGuard, getFans);
 // Sub-routes
 // GET /books/:id/reviews
 router.use('/:id/reviews', bookReviewRoutes);
+
+// GET /books/:id/favorites
+router.use('/:id/favorites', bookFavoriteRoutes);
 
 
 

@@ -1,4 +1,5 @@
 import { User, Book, Favorite } from '../database/models/index.js';
+import { addBookHelper } from './bookController.js';
 
 const toBeReturned = ['id', 'username', 'email', 'role', 'created_at', 'updated_at']
 
@@ -7,26 +8,23 @@ const toBeReturned = ['id', 'username', 'email', 'role', 'created_at', 'updated_
 export const addFavorite = async (req, res) => {
   try {
     const { id } = req.params;
-    const { bookId } = req.body;
+    const user = await User.findByPk(id, { attributes: toBeReturned });
 
-    const user = await User.findByPk(id, {attributes: toBeReturned});
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const book = await Book.findByPk(bookId);
-    if (!book) {
-      return res.status(404).json({ message: 'Book not found' });
-    }
+    const { book } = await addBookHelper(req.body);
 
     // Check if the favorite already exists
-    const existingFavorite = await Favorite.findOne({ where: { user_id: id, book_id: bookId } });
+    const existingFavorite = await Favorite.findOne({ where: { user_id: id, book_id: book.id } });
+
     if (existingFavorite) {
       return res.status(400).json({ message: 'Book is already in favorites' });
     }
 
     // Create a new favorite association
-    await Favorite.create({ user_id: id, book_id: bookId });
+    await Favorite.create({ user_id: id, book_id: book.id });
 
     return res.json({ message: 'Book added to favorites successfully' });
   } catch (error) {
@@ -55,6 +53,65 @@ export const getFavorites = async (req, res) => {
     return res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+
+
+export const getFavoritesByBook = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    console.log("getFavoritesByBook: " + id);
+
+    const book = await Book.findByPk(id);
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+
+    // Count the number of favorites for the book
+    const count = await Favorite.count({ where: { book_id: id } });
+
+    return res.json({ count });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+
+
+export const getFavorite = async (req, res) => {
+  try {
+    const { id, bookId } = req.params;
+
+    console.log(id);
+    console.log(bookId);
+
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Retrieve the specific book from the user's favorites
+    const favorite = await Favorite.findOne({ 
+        where: { 
+            user_id: id, 
+            book_id: bookId
+        }, 
+        include: { model: Book, as: 'favorited_book' } 
+    });
+
+    if (!favorite) {
+        return res.status(404).json({ message: 'Book not found in favorites' });
+    }
+
+    return res.json(favorite);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 
 
 

@@ -36,7 +36,15 @@ export const signin = async (req, res) => {
     }
     
     createSession(req, user);
-    return res.json({ message: 'Logged in successfully' });
+    return res.json({
+      message: 'Logged in successfully',
+      user: {
+        id: req.session.user.id,
+        role: req.session.user.role,
+        email: req.session.user.email,
+        username: req.session.user.username
+     }
+    });
   } catch (err) {
     return res.status(500).json({ message: 'An error occurred', error: err.toString() });
   }

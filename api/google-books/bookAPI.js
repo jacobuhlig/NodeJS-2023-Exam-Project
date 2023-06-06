@@ -2,10 +2,11 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { search } from 'google-books-search';
+import similarity from 'string-similarity';
+const { compareTwoStrings } = similarity;
 
 const options = {
   key: process.env.API_KEY,
-  field: 'title',
   offset: 0,
   limit: 1,
   type: 'books',
@@ -13,19 +14,31 @@ const options = {
   lang: 'en'
 };
 
-function filterBooksData(books) {
-  return books.map(book => ({
-    id: book.id,
-    title: book.title,
-    author: book.authors[0],  // Assuming you only care about the first author
-    description: book.description,
-    image: book.thumbnail
-  }));
+export function filterBooksData(books) {
+  return books
+    .filter(book => book.title && book.authors && book.authors.length > 0 && book.description && book.thumbnail)
+    .map(book => ({
+      id: book.id,
+      title: book.title,
+      author: book.authors[0],
+      description: book.description,
+      image: book.thumbnail,
+      ...(book.subtitle && { subtitle: book.subtitle }),
+      ...(book.categories && { categories: book.categories }),
+      ...(book.averageRating && { rating: book.averageRating }),
+      ...(book.pageCount && { page_count: book.pageCount }),
+      ...(book.publisher && { publisher: book.publisher }),
+      ...(book.publishedDate && { published_date: book.publishedDate })
+    }));
 }
 
-export const searchBooks = async (title) => {
-  return new Promise((resolve, reject) => {
-    search(title, options, (error, results) => {
+
+
+export const searchBooks1 = async (query) => {
+  let titleOptions = { ...options, field: 'title' };
+
+  const searchField = (titleOptions) => new Promise((resolve, reject) => {
+    search(query, titleOptions, (error, results) => {
       if (error) {
         reject(error);
       } else {
@@ -34,4 +47,55 @@ export const searchBooks = async (title) => {
       }
     });
   });
+
+  try {
+    const titleResults = await (searchField(titleOptions));
+    console.log(titleResults);
+
+    return titleResults;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+
+export const searchBooks = async (query) => {
+  let titleOptions = { ...options, field: 'title' };
+  let authorOptions = { ...options, field: 'author' };
+
+  const searchField = (fieldOptions) => new Promise((resolve, reject) => {
+    search(query, fieldOptions, (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        const filteredBooks = filterBooksData(results);
+        resolve(filteredBooks);
+      }
+    });
+  });
+
+  try {
+    const [titleResults, authorResults] = await Promise.all([
+      searchField(titleOptions),
+      searchField(authorOptions)
+    ]);
+
+    const allResults = [...titleResults, ...authorResults];
+    
+    // Calculate similarity and sort by it
+    const rankedResults = allResults.map(book => {
+      const titleSimilarity = compareTwoStrings(query, book.title);
+      const authorSimilarity = compareTwoStrings(query, book.author);
+      const maxSimilarity = Math.max(titleSimilarity, authorSimilarity);
+      
+      return { ...book, similarity: maxSimilarity };
+    }).sort((a, b) => b.similarity - a.similarity);
+
+    // Return top 5 matches
+    return rankedResults.slice(0, 5);
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 };

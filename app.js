@@ -10,7 +10,7 @@ app.use(helmet());
 
 import cors from "cors";
 app.use(cors({
-    origin: true,
+    origin: process.env.URL_CLIENT,
     credentials: true
 }));
 

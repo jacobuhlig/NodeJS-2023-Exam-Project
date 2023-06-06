@@ -1,11 +1,25 @@
-import { searchBooks } from '../api/google-books/bookAPI.js';
+import { searchBooks, searchBooks1 } from '../api/google-books/bookAPI.js';
 import { Book, User, Favorite } from '../database/models/index.js';
+import { filterBooksData } from '../api/google-books/bookAPI.js';
 
-export const searchByTitle = async (req, res) => {
+export const searchByTitleOrAuthor = async (req, res) => {
   try {
     const { title } = req.params;
 
-    const books = await searchBooks(title);
+    //should be changed to searchBooks - currently best for testing puposes
+    const books = await searchBooks1(title);
+    return res.json(books);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+export const searchByTitleOrAuthor1 = async (req, res) => {
+  try {
+    const { title } = req.params;
+
+    const books = await searchBooks1(title);
     return res.json(books);
   } catch (error) {
     console.error(error);
@@ -57,13 +71,29 @@ export const getAllBooks = async (req, res) => {
   }
 };
 
+export const addBookHelper = async (bookData) => {
+  if (!bookData) {
+    throw new Error('Invalid book data');
+  }
+
+  const [book, created] = await Book.findOrCreate({
+    where: { id: bookData.id },
+    defaults: bookData
+  });
+
+  return { book, created };
+};
+
 export const addBook = async (req, res) => {
   try {
-    const { id, title, author, description, image } = req.body;
+    const { book, created } = await addBookHelper(req.body);
 
-    const book = await Book.create({ id, title, author, description, image });
+    let message = 'Book added to database successfully';
+    if (!created) {
+      message = 'Book already exists in the database';
+    }
 
-    return res.json({ message: 'Book added to database successfully' });
+    return res.json({ message });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal server error' });

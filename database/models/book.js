@@ -14,6 +14,10 @@ export default function(sequelize) {
       type: DataTypes.STRING,
       allowNull: false
     },
+    subtitle: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     author: {
       type: DataTypes.STRING,
       allowNull: false
@@ -24,6 +28,32 @@ export default function(sequelize) {
     },
     image: {
       type: DataTypes.STRING,
+      allowNull: true
+    },
+    categories: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      get() {
+        return JSON.parse(this.getDataValue('categories'));
+      },
+      set(value) {
+        this.setDataValue('categories', JSON.stringify(value));
+      }
+    },
+    rating: {
+      type: DataTypes.DOUBLE,
+      allowNull: true
+    },
+    page_count: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    publisher: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    published_date: {
+      type: DataTypes.DATE,
       allowNull: true
     },
     created_at: {

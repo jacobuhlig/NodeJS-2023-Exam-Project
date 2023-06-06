@@ -1,6 +1,10 @@
-export const createSession = (req, { id, role }) => {
-  req.session.user = id;
-  req.session.role = role;
+export const createSession = (req, { id, role, email, username }) => {
+  req.session.user = {
+    id: id,
+    role: role,
+    email: email,
+    username: username
+  };
 };
 
 export const destroySession = (req) => {
