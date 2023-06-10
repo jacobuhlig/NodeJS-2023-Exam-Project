@@ -15,18 +15,6 @@ export const searchByTitleOrAuthor = async (req, res) => {
   }
 };
 
-export const searchByTitleOrAuthor1 = async (req, res) => {
-  try {
-    const { title } = req.params;
-
-    const books = await searchBooks1(title);
-    return res.json(books);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Internal server error' });
-  }
-};
-
 export const searchById = async (req, res) => {
   try {
     const { id } = req.params;

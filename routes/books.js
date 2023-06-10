@@ -4,7 +4,6 @@ import bookFavoriteRoutes from './bookFavorites.js';
 import { authorizationGuard, adminGuard } from '../middleware/auth-middleware.js';
 import { 
     searchByTitleOrAuthor, 
-    searchByTitleOrAuthor1, 
     searchById, 
     getFans, 
     getAllBooks, 
@@ -33,7 +32,6 @@ router.delete('/:id', authorizationGuard, adminGuard, deleteBook);
 // authorizationGuard
 // GET /books/search/:title
 router.get('/search/title-or-author/:title', authorizationGuard, searchByTitleOrAuthor);
-router.get('/search/title-or-author1/:title', authorizationGuard, searchByTitleOrAuthor1);
 
 // GET /books/search/:id
 router.get('/search/id/:id', authorizationGuard, searchById);

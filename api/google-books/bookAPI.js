@@ -49,10 +49,10 @@ export const searchBooks1 = async (query) => {
   });
 
   try {
-    const titleResults = await (searchField(titleOptions));
-    console.log(titleResults);
+    const titleResult = await (searchField(titleOptions));
+    console.log(titleResult);
 
-    return titleResults;
+    return titleResult;
   } catch (error) {
     console.error(error);
     return [];
