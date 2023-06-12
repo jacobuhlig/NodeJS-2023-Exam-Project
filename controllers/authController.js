@@ -24,6 +24,20 @@ import {
 
 
 
+export const status = (req, res) => {
+  if(req.session.user) {
+    res.json({
+      message: 'User is currently logged in',
+      user: req.session.user
+    });
+  } else {
+    res.status(401).json({ message: 'Not Authorized' });
+  }
+};
+
+
+
+
 export const signin = async (req, res) => {
   const { email, password } = req.body;
 
