@@ -1,11 +1,18 @@
-import {authorizationGuard} from '../middleware/auth-middleware.js';
-import {status, signin, signup, forgot, reset, confirmResetPassword, signout} from '../controllers/authController.js';
-import {Router} from 'express';
+import { authorizationGuard } from '../middleware/auth-middleware.js';
+import {
+  status,
+  signin,
+  signup,
+  forgot,
+  reset,
+  confirmResetPassword,
+  signout,
+} from '../controllers/authController.js';
+import { Router } from 'express';
 const router = Router();
 
-
 // POST /auth/status
-router.post('/status', status);
+router.get('/status', status);
 
 // POST /auth/signin
 router.post('/signin', signin);
@@ -24,7 +31,5 @@ router.post('/reset/:token/confirm', confirmResetPassword);
 
 // GET /auth/signout
 router.get('/signout', authorizationGuard, signout);
-
-
 
 export default router;

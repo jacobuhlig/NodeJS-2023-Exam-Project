@@ -5,22 +5,32 @@ import express from 'express';
 const app = express();
 app.use(express.json());
 
-import helmet  from "helmet";
+// Only for development
+import morgan from 'morgan';
+// app.use(morgan('tiny'));
+// app.use(morgan('common'));
+app.use(morgan('dev'));
+
+import helmet from 'helmet';
 app.use(helmet());
 
-import cors from "cors";
-app.use(cors({
+import cors from 'cors';
+app.use(
+  cors({
     origin: process.env.URL_CLIENT,
-    credentials: true
-}));
+    credentials: true,
+  })
+);
 
-import session from "express-session";
-app.use(session({
+import session from 'express-session';
+app.use(
+  session({
     secret: process.env.SESSION_SECRET,
-    resave: false, 
+    resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } 
-}));
+    cookie: { secure: false },
+  })
+);
 
 // Rate-limiter
 // import rateLimit from 'express-rate-limit'
@@ -28,21 +38,18 @@ app.use(session({
 // const apiLimiter = rateLimit({
 //     windowMs: 15 * 60 * 1000,
 //     max: 100,
-//     standardHeaders: true, 
+//     standardHeaders: true,
 //     legacyHeaders: false,
 // });
 // app.use(apiLimiter);
 
 // const authLimiter = rateLimit({
 //     windowMs: 15 * 60 * 1000,
-//     max: 10, 
+//     max: 10,
 //     standardHeaders: true,
 //     legacyHeaders: false,
 // });
 // app.use("/auth/signin", authLimiter);
-
-
-
 
 // Database
 import { sequelize } from './database/models/index.js';
@@ -56,10 +63,8 @@ import { sequelize } from './database/models/index.js';
   }
 })();
 
-
-
 // Middleware
-import {authorizationGuard} from './middleware/auth-middleware.js';
+import { authorizationGuard } from './middleware/auth-middleware.js';
 
 // Routes
 import authRoutes from './routes/auth.js';
@@ -71,8 +76,6 @@ app.use('/auth', authRoutes); // should be deleted, upon the above's outcommenti
 app.use('/users', authorizationGuard, userRoutes);
 app.use('/books', bookRoutes);
 
-
-
 // Default route
 app.get('/', async (req, res) => {
   try {
@@ -82,8 +85,6 @@ app.get('/', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-
-
 
 // Listener
 const PORT = process.env.PORT || 8081;
