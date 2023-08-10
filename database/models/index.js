@@ -19,6 +19,8 @@ Object.keys(models).forEach(modelName => {
   }
 });
 
-sequelize.sync();
+// In case of changes to the models, this should be used once, then changed to to the below default
+// sequelize.sync({ alter: true });
+sequelize.sync({ alter: true });
 
 export { sequelize, User, Book, Review, Favorite };

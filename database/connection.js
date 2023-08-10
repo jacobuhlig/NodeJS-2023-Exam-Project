@@ -11,7 +11,7 @@ const dialect = process.env.DB_DIALECT || 'mysql';
 
 const sequelize = new Sequelize(name, username, password, {
   host: host,
-  dialect: dialect
+  dialect: dialect,
 });
 
 export default sequelize;

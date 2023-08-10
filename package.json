@@ -11,8 +11,15 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Jacob Uhlig",
+  "license": "MIT",
+  "devDependencies": {
+    "morgan": "^1.10.0",
+    "eslint": "^8.46.0",
+    "eslint-config-prettier": "^8.10.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.1"
+  },
   "dependencies": {
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
@@ -31,8 +38,5 @@
     "sequelize": "^6.31.1",
     "socket.io": "^4.6.1",
     "string-similarity": "^4.0.4"
-  },
-  "devDependencies": {
-    "morgan": "^1.10.0"
   }
 }

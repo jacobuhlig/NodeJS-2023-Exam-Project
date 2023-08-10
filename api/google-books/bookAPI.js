@@ -11,12 +11,19 @@ const options = {
   limit: 1,
   type: 'books',
   order: 'relevance',
-  lang: 'en'
+  lang: 'en',
 };
 
 export function filterBooksData(books) {
   return books
-    .filter(book => book.title && book.authors && book.authors.length > 0 && book.description && book.thumbnail)
+    .filter(
+      book =>
+        book.title &&
+        book.authors &&
+        book.authors.length > 0 &&
+        book.description &&
+        book.thumbnail,
+    )
     .map(book => ({
       id: book.id,
       title: book.title,
@@ -28,28 +35,27 @@ export function filterBooksData(books) {
       ...(book.averageRating && { rating: book.averageRating }),
       ...(book.pageCount && { page_count: book.pageCount }),
       ...(book.publisher && { publisher: book.publisher }),
-      ...(book.publishedDate && { published_date: book.publishedDate })
+      ...(book.publishedDate && { published_date: book.publishedDate }),
     }));
 }
 
-
-
-export const searchBooks1 = async (query) => {
+export const searchBooks1 = async query => {
   let titleOptions = { ...options, field: 'title' };
 
-  const searchField = (titleOptions) => new Promise((resolve, reject) => {
-    search(query, titleOptions, (error, results) => {
-      if (error) {
-        reject(error);
-      } else {
-        const filteredBooks = filterBooksData(results);
-        resolve(filteredBooks);
-      }
+  const searchField = titleOptions =>
+    new Promise((resolve, reject) => {
+      search(query, titleOptions, (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          const filteredBooks = filterBooksData(results);
+          resolve(filteredBooks);
+        }
+      });
     });
-  });
 
   try {
-    const titleResult = await (searchField(titleOptions));
+    const titleResult = await searchField(titleOptions);
     console.log(titleResult);
 
     return titleResult;
@@ -57,40 +63,42 @@ export const searchBooks1 = async (query) => {
     console.error(error);
     return [];
   }
-}
+};
 
-
-export const searchBooks = async (query) => {
+export const searchBooks = async query => {
   let titleOptions = { ...options, field: 'title' };
   let authorOptions = { ...options, field: 'author' };
 
-  const searchField = (fieldOptions) => new Promise((resolve, reject) => {
-    search(query, fieldOptions, (error, results) => {
-      if (error) {
-        reject(error);
-      } else {
-        const filteredBooks = filterBooksData(results);
-        resolve(filteredBooks);
-      }
+  const searchField = fieldOptions =>
+    new Promise((resolve, reject) => {
+      search(query, fieldOptions, (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          const filteredBooks = filterBooksData(results);
+          resolve(filteredBooks);
+        }
+      });
     });
-  });
 
   try {
     const [titleResults, authorResults] = await Promise.all([
       searchField(titleOptions),
-      searchField(authorOptions)
+      searchField(authorOptions),
     ]);
 
     const allResults = [...titleResults, ...authorResults];
-    
+
     // Calculate similarity and sort by it
-    const rankedResults = allResults.map(book => {
-      const titleSimilarity = compareTwoStrings(query, book.title);
-      const authorSimilarity = compareTwoStrings(query, book.author);
-      const maxSimilarity = Math.max(titleSimilarity, authorSimilarity);
-      
-      return { ...book, similarity: maxSimilarity };
-    }).sort((a, b) => b.similarity - a.similarity);
+    const rankedResults = allResults
+      .map(book => {
+        const titleSimilarity = compareTwoStrings(query, book.title);
+        const authorSimilarity = compareTwoStrings(query, book.author);
+        const maxSimilarity = Math.max(titleSimilarity, authorSimilarity);
+
+        return { ...book, similarity: maxSimilarity };
+      })
+      .sort((a, b) => b.similarity - a.similarity);
 
     // Return top 5 matches
     return rankedResults.slice(0, 5);

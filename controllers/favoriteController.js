@@ -1,9 +1,14 @@
 import { User, Book, Favorite } from '../database/models/index.js';
 import { addBookHelper } from './bookController.js';
 
-const toBeReturned = ['id', 'username', 'email', 'role', 'created_at', 'updated_at']
-
-
+const toBeReturned = [
+  'id',
+  'username',
+  'email',
+  'role',
+  'created_at',
+  'updated_at',
+];
 
 export const addFavorite = async (req, res) => {
   try {
@@ -17,7 +22,9 @@ export const addFavorite = async (req, res) => {
     const { book } = await addBookHelper(req.body);
 
     // Check if the favorite already exists
-    const existingFavorite = await Favorite.findOne({ where: { user_id: id, book_id: book.id } });
+    const existingFavorite = await Favorite.findOne({
+      where: { user_id: id, book_id: book.id },
+    });
 
     if (existingFavorite) {
       return res.status(400).json({ message: 'Book is already in favorites' });
@@ -33,8 +40,6 @@ export const addFavorite = async (req, res) => {
   }
 };
 
-
-
 export const getFavorites = async (req, res) => {
   try {
     const { id } = req.params;
@@ -45,7 +50,10 @@ export const getFavorites = async (req, res) => {
     }
 
     // Retrieve the user's favorite books
-    const favorites = await Favorite.findAll({ where: { user_id: id }, include: { model: Book, as: 'favorited_book' } });
+    const favorites = await Favorite.findAll({
+      where: { user_id: id },
+      include: { model: Book, as: 'favorited_book' },
+    });
 
     return res.json(favorites);
   } catch (error) {
@@ -54,13 +62,11 @@ export const getFavorites = async (req, res) => {
   }
 };
 
-
-
 export const getFavoritesByBook = async (req, res) => {
   try {
     const { id } = req.params;
 
-    console.log("getFavoritesByBook: " + id);
+    console.log('getFavoritesByBook: ' + id);
 
     const book = await Book.findByPk(id);
     if (!book) {
@@ -77,9 +83,6 @@ export const getFavoritesByBook = async (req, res) => {
   }
 };
 
-
-
-
 export const getFavorite = async (req, res) => {
   try {
     const { id, bookId } = req.params;
@@ -93,16 +96,16 @@ export const getFavorite = async (req, res) => {
     }
 
     // Retrieve the specific book from the user's favorites
-    const favorite = await Favorite.findOne({ 
-        where: { 
-            user_id: id, 
-            book_id: bookId
-        }, 
-        include: { model: Book, as: 'favorited_book' } 
+    const favorite = await Favorite.findOne({
+      where: {
+        user_id: id,
+        book_id: bookId,
+      },
+      include: { model: Book, as: 'favorited_book' },
     });
 
     if (!favorite) {
-        return res.status(404).json({ message: 'Book not found in favorites' });
+      return res.status(404).json({ message: 'Book not found in favorites' });
     }
 
     return res.json(favorite);
@@ -112,20 +115,19 @@ export const getFavorite = async (req, res) => {
   }
 };
 
-
-
-
-export const deleteFavorite =  async (req, res) => {
+export const deleteFavorite = async (req, res) => {
   try {
     const { id, bookId } = req.params;
 
-    const user = await User.findByPk(id, {attributes: toBeReturned});
+    const user = await User.findByPk(id, { attributes: toBeReturned });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
     // Check if the favorite exists
-    const favorite = await Favorite.findOne({ where: { user_id: id, book_id: bookId } });
+    const favorite = await Favorite.findOne({
+      where: { user_id: id, book_id: bookId },
+    });
     if (!favorite) {
       return res.status(404).json({ message: 'Favorite not found' });
     }

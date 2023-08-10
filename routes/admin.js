@@ -5,6 +5,7 @@ import {
   getAllBooks,
   getBookById,
   updateBook,
+  deleteBook,
 } from '../controllers/bookController.js';
 const router = Router();
 
@@ -37,5 +38,11 @@ router.get('/books', getAllBooks);
 
 // GET /admin/books/:id
 router.get('/books/:id', getBookById);
+
+// DELETE admin/books/:id
+router.delete('/books/:id', deleteBook);
+
+// PUT admin/books/:id
+router.put('/books/:id', updateBook);
 
 export default router;

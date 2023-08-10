@@ -9,11 +9,11 @@ import {
   searchByTitleOrAuthor,
   searchById,
   getFans,
-  getAllBooks,
-  getBookById,
+  // getAllBooks,
+  // getBookById,
   addBook,
   updateBook,
-  deleteBook,
+  // deleteBook,
 } from '../controllers/bookController.js';
 
 const router = Router();
@@ -29,18 +29,18 @@ const router = Router();
 // POST /books
 router.post('/', authorizationGuard, addBook);
 
-// PUT /books/:id
-router.put('/:id', authorizationGuard, adminGuard, updateBook);
+// // PUT /books/:id
+// router.put('/:id', authorizationGuard, adminGuard, updateBook);
 
-// DELETE /books/:id
-router.delete('/:id', authorizationGuard, adminGuard, deleteBook);
+// // DELETE /books/:id
+// router.delete('/:id', authorizationGuard, adminGuard, deleteBook);
 
 // authorizationGuard
 // GET /books/search/:title
 router.get(
   '/search/title-or-author/:title',
   authorizationGuard,
-  searchByTitleOrAuthor
+  searchByTitleOrAuthor,
 );
 
 // GET /books/search/:id

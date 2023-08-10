@@ -81,11 +81,15 @@ export const addBookHelper = async bookData => {
   if (!bookData) {
     throw new Error('Invalid book data');
   }
+  console.log(bookData);
 
   const [book, created] = await Book.findOrCreate({
     where: { id: bookData.id },
     defaults: bookData,
   });
+
+  console.log(book);
+  console.log(created);
 
   return { book, created };
 };
@@ -99,7 +103,7 @@ export const addBook = async (req, res) => {
       message = 'Book already exists in the database';
     }
 
-    return res.json({ message });
+    return res.status(201).json({ message, book });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal server error' });
@@ -122,7 +126,7 @@ export const updateBook = async (req, res) => {
     book.image = image || book.image;
     await book.save();
 
-    return res.json({ message: 'Book updated successfully' });
+    return res.json({ message: 'Book updated successfully', book });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal server error' });
@@ -132,9 +136,11 @@ export const updateBook = async (req, res) => {
 export const deleteBook = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id);
 
     const book = await Book.findByPk(id);
     if (!book) {
+      console.log(book);
       return res.status(404).json({ message: 'Book not found' });
     }
 
