@@ -13,7 +13,7 @@ const toBeReturned = [
 export const getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({ attributes: toBeReturned });
-    return res.json(users);
+    return res.status(200).json({ message: 'Users found', users });
   } catch (error) {
     return res
       .status(500)
@@ -30,7 +30,7 @@ export const getUserById = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    return res.json(user);
+    return res.status(200).json({ message: 'User found', user: user });
   } catch (error) {
     return res
       .status(500)

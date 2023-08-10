@@ -64,15 +64,20 @@ import { sequelize } from './database/models/index.js';
 })();
 
 // Middleware
-import { authorizationGuard } from './middleware/auth-middleware.js';
+import {
+  authorizationGuard,
+  adminGuard,
+} from './middleware/auth-middleware.js';
 
 // Routes
 import authRoutes from './routes/auth.js';
+import adminRoutes from './routes/admin.js';
 import userRoutes from './routes/users.js';
 import bookRoutes from './routes/books.js';
 
 // app.use('/auth', authLimiter, authRoutes);
 app.use('/auth', authRoutes); // should be deleted, upon the above's outcommenting
+app.use('/admin', authorizationGuard, adminGuard, adminRoutes);
 app.use('/users', authorizationGuard, userRoutes);
 app.use('/books', bookRoutes);
 

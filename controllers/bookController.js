@@ -37,7 +37,7 @@ export const getFans = async (req, res) => {
 
     const favorites = await Favorite.findAll({
       where: { book_id: id },
-      include: { model: User, as: 'user', attributes: ['id', 'username'] }
+      include: { model: User, as: 'user', attributes: ['id', 'username'] },
     });
 
     const fans = favorites.map(favorite => favorite.user);
@@ -52,21 +52,39 @@ export const getFans = async (req, res) => {
 export const getAllBooks = async (req, res) => {
   try {
     const books = await Book.findAll();
-    return res.json(books);
+    return res.json({ message: 'Found all books', books });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal server error' });
   }
 };
 
-export const addBookHelper = async (bookData) => {
+export const getBookById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Id = GoogleId
+    const book = await Book.findByPk(id);
+
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+
+    return res.json({ message: 'Found book', book });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+export const addBookHelper = async bookData => {
   if (!bookData) {
     throw new Error('Invalid book data');
   }
 
   const [book, created] = await Book.findOrCreate({
     where: { id: bookData.id },
-    defaults: bookData
+    defaults: bookData,
   });
 
   return { book, created };
