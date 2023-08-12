@@ -20,7 +20,7 @@ export const status = (req, res) => {
   // console.log(`session info:`);
   // console.log(req.session);
   // console.log(req.session.cookie);
-  if (req.session.user) {
+  if (req.session.user.id) {
     console.log(req.session.user);
     res.json({
       message: 'User is currently logged in',

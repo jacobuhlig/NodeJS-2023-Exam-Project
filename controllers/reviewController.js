@@ -1,17 +1,28 @@
 import { User, Book, Review } from '../database/models/index.js';
 
-const toBeReturned = ['id', 'username', 'email', 'role', 'created_at', 'updated_at']
-const toBeExcluded1 = ['created_at', 'updated_at']
-const toBeExcluded2 = ['id', 'password', 'role', 'reset_token', 'reset_token_expiration']
-
-
+const toBeReturned = [
+  'id',
+  'username',
+  'email',
+  'role',
+  'created_at',
+  'updated_at',
+];
+const toBeExcluded1 = ['created_at', 'updated_at'];
+const toBeExcluded2 = [
+  'id',
+  'password',
+  'role',
+  'reset_token',
+  'reset_token_expiration',
+];
 
 export const addReview = async (req, res) => {
   try {
     const { id } = req.params;
     const { bookId, reviewText, rating } = req.body;
 
-    const user = await User.findByPk(id, {attributes: toBeReturned});
+    const user = await User.findByPk(id, { attributes: toBeReturned });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -22,7 +33,12 @@ export const addReview = async (req, res) => {
     }
 
     // Create a new review
-    await Review.create({ user_id: id, book_id: bookId, review_text: reviewText, rating: rating });
+    await Review.create({
+      user_id: id,
+      book_id: bookId,
+      review_text: reviewText,
+      rating: rating,
+    });
 
     return res.json({ message: 'Review added successfully' });
   } catch (error) {
@@ -40,7 +56,14 @@ export const getReviewsByUser = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const reviews = await Review.findAll({ where: { user_id: id }, include: { model: Book, as: 'reviewed_book', attributes: { exclude: toBeExcluded1 } } });
+    const reviews = await Review.findAll({
+      where: { user_id: id },
+      include: {
+        model: Book,
+        as: 'reviewed_book',
+        attributes: { exclude: toBeExcluded1 },
+      },
+    });
 
     return res.json(reviews);
   } catch (error) {
@@ -53,12 +76,14 @@ export const deleteReview = async (req, res) => {
   try {
     const { id, reviewId } = req.params;
 
-    const user = await User.findByPk(id, {attributes: toBeReturned});
+    const user = await User.findByPk(id, { attributes: toBeReturned });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const review = await Review.findOne({ where: { id: reviewId, user_id: id } });
+    const review = await Review.findOne({
+      where: { id: reviewId, user_id: id },
+    });
     if (!review) {
       return res.status(404).json({ message: 'Review not found' });
     }
@@ -82,7 +107,14 @@ export const getReviewsByBook = async (req, res) => {
       return res.status(404).json({ message: 'Book not found' });
     }
 
-    const reviews = await Review.findAll({ where: { book_id: id }, include: { model: User, as: 'user', attributes: { exclude: toBeExcluded1 + toBeExcluded2 } } });
+    const reviews = await Review.findAll({
+      where: { book_id: id },
+      include: {
+        model: User,
+        as: 'user',
+        attributes: { exclude: toBeExcluded1 + toBeExcluded2 },
+      },
+    });
 
     return res.json(reviews);
   } catch (error) {

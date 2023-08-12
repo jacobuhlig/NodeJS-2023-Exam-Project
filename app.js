@@ -19,7 +19,7 @@ app.use(
   cors({
     origin: process.env.URL_CLIENT,
     credentials: true,
-  })
+  }),
 );
 
 import session from 'express-session';
@@ -29,7 +29,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false },
-  })
+  }),
 );
 
 // Rate-limiter

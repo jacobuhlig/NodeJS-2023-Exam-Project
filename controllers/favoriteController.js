@@ -69,6 +69,61 @@ export const getFavorites = async (req, res) => {
   }
 };
 
+// export const getAllFavorites = async (req, res) => {
+//   try {
+//     // Retrieve all favorite books
+//     const favorites = await Favorite.findAll({
+//       include: { model: Book, as: 'favorited_book' },
+//     });
+
+//     if (favorites.length === 0) {
+//       return res.status(404).json({ message: 'No favorites found' });
+//     }
+
+//     return res.status(200).json({
+//       message: 'Favorites retrieved successfully',
+//       favorites,
+//     });
+//   } catch (error) {
+//     console.log('my error');
+//     console.error(error);
+//     return res.status(500).json({ message: 'Internal server error' });
+//   }
+// };
+
+export const getAllFavorites = async (req, res) => {
+  try {
+    // Retrieve all favorite books
+    const favorites = await Favorite.findAll({
+      include: { model: Book, as: 'favorited_book' },
+    });
+
+    if (favorites.length === 0) {
+      return res.status(404).json({ message: 'No favorites found' });
+    }
+
+    // Create a set to check uniqueness
+    const uniqueBookIds = new Set();
+
+    // Filter out the non-unique books
+    const uniqueFavorites = favorites.filter(favorite => {
+      if (uniqueBookIds.has(favorite.book_id)) {
+        return false;
+      }
+      uniqueBookIds.add(favorite.book_id);
+      return true;
+    });
+
+    return res.status(200).json({
+      message: 'Favorites retrieved successfully',
+      favorites: uniqueFavorites,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 export const getFavoritesByBook = async (req, res) => {
   try {
     const { id } = req.params;
@@ -114,7 +169,7 @@ export const getFavorite = async (req, res) => {
       return res.status(404).json({ message: 'Book not found in favorites' });
     }
 
-    return res.json({ message: 'Book found in favorites', favorite: favorite });
+    return res.json({ message: 'Book found in favorites', favorite });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal server error' });

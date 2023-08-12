@@ -37,12 +37,16 @@ export const getFans = async (req, res) => {
 
     const favorites = await Favorite.findAll({
       where: { book_id: id },
-      include: { model: User, as: 'user', attributes: ['id', 'username'] },
+      include: {
+        model: User,
+        as: 'user',
+        attributes: ['id', 'username', 'email'],
+      },
     });
 
     const fans = favorites.map(favorite => favorite.user);
 
-    return res.json(fans);
+    return res.status(200).json(fans);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal server error' });

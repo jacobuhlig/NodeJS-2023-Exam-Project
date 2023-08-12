@@ -3,16 +3,16 @@ import bookReviewRoutes from './bookReviews.js';
 import bookFavoriteRoutes from './bookFavorites.js';
 import {
   authorizationGuard,
-  adminGuard,
+  // adminGuard,
 } from '../middleware/auth-middleware.js';
 import {
   searchByTitleOrAuthor,
   searchById,
-  getFans,
+  // getFans,
   // getAllBooks,
   // getBookById,
   addBook,
-  updateBook,
+  // updateBook,
   // deleteBook,
 } from '../controllers/bookController.js';
 
@@ -45,9 +45,6 @@ router.get(
 
 // GET /books/search/:id
 router.get('/search/id/:id', authorizationGuard, searchById);
-
-// GET /books/search/:id/fans
-router.get('/search/:id/fans', authorizationGuard, getFans);
 
 // Sub-routes
 // GET /books/:id/reviews

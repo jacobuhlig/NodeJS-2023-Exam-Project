@@ -1,4 +1,4 @@
-import adminController from '../controllers/adminController.js';
+// import adminController from '../controllers/adminController.js';
 import { Router } from 'express';
 import {
   getAllUsers,
@@ -6,11 +6,14 @@ import {
   deleteUserById,
 } from '../controllers/userController.js';
 import {
+  getFans,
   getAllBooks,
   getBookById,
   updateBook,
   deleteBook,
 } from '../controllers/bookController.js';
+import { getAllFavorites } from '../controllers/favoriteController.js';
+
 const router = Router();
 
 // // POST /admin/status
@@ -30,6 +33,14 @@ const router = Router();
 
 // // POST /admin/reset/:token/confirm
 // router.post('/reset/:token/confirm', confirmResetPassword);
+
+// Favorites
+// Special - Gets all books that have been favorited
+// GET admin/books/favorites
+router.get('/books/favorites', getAllFavorites);
+
+// GET admin/books/:id/fans
+router.get('/books/:id/fans', getFans);
 
 // Users
 // GET /admin/users
