@@ -13,11 +13,17 @@ const Favorite = FavoriteModel(sequelize);
 const models = { User, Book, Review, Favorite };
 
 // Define associations
-Object.keys(models).forEach(modelName => {
+for (const modelName in models) {
   if (models[modelName].associate) {
     models[modelName].associate(models);
   }
-});
+}
+
+// Object.keys(models).forEach(modelName => {
+//   if (models[modelName].associate) {
+//     models[modelName].associate(models);
+//   }
+// });
 
 // In case of changes to the models, this should be used once, then changed to to the below default
 // sequelize.sync({ alter: true });
