@@ -13,7 +13,8 @@ const toBeReturned = [
 export const addFavorite = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findByPk(id, { attributes: toBeReturned });
+    const user = await User.findByPk(id);
+    // const user = await User.findByPk(id, { attributes: toBeReturned });
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -33,7 +34,10 @@ export const addFavorite = async (req, res) => {
     // Create a new favorite association
     await Favorite.create({ user_id: id, book_id: book.id });
 
-    return res.json({ message: 'Book added to favorites successfully' });
+    return res.json({
+      message: 'Book added to favorites successfully',
+      favorite: existingFavorite,
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal server error' });
@@ -55,7 +59,10 @@ export const getFavorites = async (req, res) => {
       include: { model: Book, as: 'favorited_book' },
     });
 
-    return res.json(favorites);
+    return res.json({
+      message: 'Book added to favorites successfully',
+      favorites,
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal server error' });
@@ -66,8 +73,6 @@ export const getFavoritesByBook = async (req, res) => {
   try {
     const { id } = req.params;
 
-    console.log('getFavoritesByBook: ' + id);
-
     const book = await Book.findByPk(id);
     if (!book) {
       return res.status(404).json({ message: 'Book not found' });
@@ -76,7 +81,7 @@ export const getFavoritesByBook = async (req, res) => {
     // Count the number of favorites for the book
     const count = await Favorite.count({ where: { book_id: id } });
 
-    return res.json({ count });
+    return res.json({ message: `Count: ${count}`, count });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal server error' });
@@ -87,10 +92,11 @@ export const getFavorite = async (req, res) => {
   try {
     const { id, bookId } = req.params;
 
+    console.log(`Ids:`);
     console.log(id);
     console.log(bookId);
 
-    const user = await User.findByPk(id);
+    const user = await User.findByPk(id, { attributes: toBeReturned });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -108,7 +114,7 @@ export const getFavorite = async (req, res) => {
       return res.status(404).json({ message: 'Book not found in favorites' });
     }
 
-    return res.json(favorite);
+    return res.json({ message: 'Book found in favorites', favorite: favorite });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal server error' });

@@ -1,6 +1,10 @@
 import adminController from '../controllers/adminController.js';
 import { Router } from 'express';
-import { getAllUsers, getUserById } from '../controllers/userController.js';
+import {
+  getAllUsers,
+  getUserById,
+  deleteUserById,
+} from '../controllers/userController.js';
 import {
   getAllBooks,
   getBookById,
@@ -27,22 +31,27 @@ const router = Router();
 // // POST /admin/reset/:token/confirm
 // router.post('/reset/:token/confirm', confirmResetPassword);
 
+// Users
 // GET /admin/users
 router.get('/users', getAllUsers);
 
 // GET /admin/users/:id
 router.get('/users/:id', getUserById);
 
+// DELETE /admin/users/:id
+router.delete('/users/:id', deleteUserById);
+
+// Books
 // GET /admin/books
 router.get('/books', getAllBooks);
 
 // GET /admin/books/:id
 router.get('/books/:id', getBookById);
 
-// DELETE admin/books/:id
-router.delete('/books/:id', deleteBook);
-
 // PUT admin/books/:id
 router.put('/books/:id', updateBook);
+
+// DELETE admin/books/:id
+router.delete('/books/:id', deleteBook);
 
 export default router;
