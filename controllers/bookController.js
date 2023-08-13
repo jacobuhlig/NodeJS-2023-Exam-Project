@@ -1,4 +1,4 @@
-import { searchBooks, searchBooks1 } from '../api/google-books/bookAPI.js';
+import { searchBooks, searchBook } from '../api/google-books/bookAPI.js';
 import { Book, User, Favorite } from '../database/models/index.js';
 import { filterBooksData } from '../api/google-books/bookAPI.js';
 
@@ -6,8 +6,8 @@ export const searchByTitleOrAuthor = async (req, res) => {
   try {
     const { title } = req.params;
 
-    //should be changed to searchBooks - currently best for testing puposes
-    const books = await searchBooks1(title);
+    //should be changed to searchBooks - currently best for testing purposes
+    const books = await searchBooks(title);
     return res.json(books);
   } catch (error) {
     console.error(error);
@@ -18,8 +18,9 @@ export const searchByTitleOrAuthor = async (req, res) => {
 export const searchById = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id);
 
-    const book = await searchBooks(id);
+    const book = await searchBook(id);
     if (!book) {
       return res.status(404).json({ message: 'Book not found' });
     }

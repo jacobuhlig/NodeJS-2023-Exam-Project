@@ -10,7 +10,7 @@ import {
   searchById,
   // getFans,
   // getAllBooks,
-  // getBookById,
+  getBookById,
   addBook,
   // updateBook,
   // deleteBook,
@@ -26,9 +26,6 @@ const router = Router();
 // delete upon successful implementation in the admin router
 // router.get('/', authorizationGuard, adminGuard, getBookById);
 
-// POST /books
-router.post('/', authorizationGuard, addBook);
-
 // // PUT /books/:id
 // router.put('/:id', authorizationGuard, adminGuard, updateBook);
 
@@ -37,14 +34,27 @@ router.post('/', authorizationGuard, addBook);
 
 // authorizationGuard
 // GET /books/search/:title
+// router.get(
+//   '/search/title-or-author/:title',
+//   authorizationGuard,
+//   searchByTitleOrAuthor,
+// );
+
+// GET /books/search/:id
+router.get('/search/id/:id', authorizationGuard, searchById);
+
+// GET /books/search/:title
 router.get(
   '/search/title-or-author/:title',
   authorizationGuard,
   searchByTitleOrAuthor,
 );
 
-// GET /books/search/:id
-router.get('/search/id/:id', authorizationGuard, searchById);
+// GET /books/:id
+router.get('/:id', authorizationGuard, getBookById);
+
+// POST /books
+router.post('/', authorizationGuard, addBook);
 
 // Sub-routes
 // GET /books/:id/reviews

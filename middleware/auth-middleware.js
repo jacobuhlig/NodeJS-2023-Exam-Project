@@ -1,6 +1,6 @@
 export function authorizationGuard(req, res, next) {
   console.log('Session:', req.session);
-  if (!req.session) {
+  if (!req.session.user) {
     return res
       .status(403)
       .send({ message: 'You are not authorized to see this page - General' });

@@ -1,17 +1,21 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { search } from 'google-books-search';
+import { search, lookup } from 'google-books-search';
 import similarity from 'string-similarity';
 const { compareTwoStrings } = similarity;
 
 const options = {
   key: process.env.API_KEY,
   offset: 0,
-  limit: 1,
+  limit: 4,
   type: 'books',
   order: 'relevance',
   lang: 'en',
+};
+
+const optionsBase = {
+  key: process.env.API_KEY,
 };
 
 export function filterBooksData(books) {
@@ -39,31 +43,31 @@ export function filterBooksData(books) {
     }));
 }
 
-export const searchBooks1 = async query => {
-  let titleOptions = { ...options, field: 'title' };
+// export const searchBooks1 = async query => {
+//   let titleOptions = { ...options, field: 'title' };
 
-  const searchField = titleOptions =>
-    new Promise((resolve, reject) => {
-      search(query, titleOptions, (error, results) => {
-        if (error) {
-          reject(error);
-        } else {
-          const filteredBooks = filterBooksData(results);
-          resolve(filteredBooks);
-        }
-      });
-    });
+//   const searchField = titleOptions =>
+//     new Promise((resolve, reject) => {
+//       search(query, titleOptions, (error, results) => {
+//         if (error) {
+//           reject(error);
+//         } else {
+//           const filteredBooks = filterBooksData(results);
+//           resolve(filteredBooks);
+//         }
+//       });
+//     });
 
-  try {
-    const titleResult = await searchField(titleOptions);
-    console.log(titleResult);
+//   try {
+//     const titleResult = await searchField(titleOptions);
+//     console.log(titleResult);
 
-    return titleResult;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-};
+//     return titleResult;
+//   } catch (error) {
+//     console.error(error);
+//     return [];
+//   }
+// };
 
 export const searchBooks = async query => {
   let titleOptions = { ...options, field: 'title' };
@@ -106,4 +110,17 @@ export const searchBooks = async query => {
     console.error(error);
     return [];
   }
+};
+
+export const searchBook = async id => {
+  return new Promise((resolve, reject) => {
+    lookup(id, optionsBase, (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        const filteredBook = filterBooksData([result]); // Since filterBooksData expects an array
+        resolve(filteredBook[0]); // Return the single book
+      }
+    });
+  });
 };
