@@ -3,6 +3,7 @@ import { adminAndCurrentUserGuard } from '../middleware/auth-middleware.js';
 import {
   addReview,
   getReviewsByUser,
+  getReviewById,
   deleteReview,
 } from '../controllers/reviewController.js';
 const router = Router({ mergeParams: true });
@@ -12,9 +13,18 @@ const router = Router({ mergeParams: true });
 router.post('/', addReview);
 
 // GET /users/:id/reviews
-router.get('/', adminAndCurrentUserGuard, getReviewsByUser);
+router.get('/', getReviewsByUser);
+
+// GET /users/:id/reviews/:reviewId
+router.get('/:reviewId', getReviewById);
 
 // DELETE /users/:id/reviews/:reviewId
-router.delete('/:reviewId', adminAndCurrentUserGuard, deleteReview);
+router.delete('/:reviewId', deleteReview);
+
+// // GET /users/:id/reviews/:reviewId
+// router.get('/:reviewId', getReviewById);
+
+// // DELETE /users/:id/reviews/:reviewId
+// router.delete('/:reviewId', deleteReview);
 
 export default router;

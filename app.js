@@ -2,8 +2,14 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express from 'express';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+
 const app = express();
 app.use(express.json());
+
+const server = createServer(app);
+const io = new Server(server);
 
 // Only for development
 import morgan from 'morgan';
@@ -13,7 +19,7 @@ app.use(morgan('dev'));
 
 import helmet from 'helmet';
 app.use(helmet());
-
+console.log(process.env.URL_CLIENT);
 import cors from 'cors';
 app.use(
   cors({
@@ -80,6 +86,18 @@ app.use('/auth', authRoutes); // should be deleted, upon the above's outcommenti
 app.use('/admin', authorizationGuard, adminGuard, adminRoutes);
 app.use('/users', authorizationGuard, userRoutes);
 app.use('/books', bookRoutes);
+
+io.on('connection', socket => {
+  console.log('User connected:', socket.id);
+
+  socket.on('changeColor', color => {
+    io.emit('newColor', color);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+  });
+});
 
 // Default route
 app.get('/', async (req, res) => {

@@ -11,10 +11,23 @@ import {
   updateUserById,
   deleteUserById,
   verifyPassword,
+  getReviewByUserId,
 } from '../controllers/userController.js';
 
 const router = Router();
 
+// Sub-routes
+// Favorites
+router.use('/:id/favorites', favoritesRoutes);
+
+// Reviews
+router.use('/:id/reviews', adminAndCurrentUserGuard, userReviewRoutes);
+
+// Special route
+// GET /users/:userId/books/:bookId
+router.get('/:id/books/:bookId', adminAndCurrentUserGuard, getReviewByUserId);
+
+// Regular routes
 // GET /users
 router.get('/', adminGuard, getAllUsers);
 
@@ -29,12 +42,5 @@ router.delete('/:id', adminAndCurrentUserGuard, deleteUserById);
 
 // POST /users/:id/verify-password
 router.post('/:id/verify-password', adminAndCurrentUserGuard, verifyPassword);
-
-// Sub-routes
-// Favorites
-router.use('/:id/favorites', favoritesRoutes);
-
-// Reviews
-router.use('/:id/reviews', userReviewRoutes);
 
 export default router;

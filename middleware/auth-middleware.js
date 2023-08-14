@@ -5,6 +5,7 @@ export function authorizationGuard(req, res, next) {
       .status(403)
       .send({ message: 'You are not authorized to see this page - General' });
   }
+  console.debug(`Cleared authorizationGuard`);
   next();
 }
 
@@ -15,23 +16,23 @@ export function adminGuard(req, res, next) {
       .status(403)
       .send({ message: 'You are not authorized to see this page - Admin' });
   }
+  console.debug(`Cleared adminGuard`);
   next();
 }
 
 export function adminAndCurrentUserGuard(req, res, next) {
   const { id } = req.params;
-  console.log(id);
+  console.debug('id: ', id);
+  console.debug('Number(id): ', Number(id));
+  console.debug('+id: ', +id);
 
-  if (!req.session.user) {
-    return res.status(401).json({ message: 'Unauthorized' });
-  }
-
-  console.log(req.session.user.id);
-  console.log(req.session.user.role);
+  console.debug('req.session.user.id: ', req.session.user.id);
+  console.debug('req.session.user.role: ', req.session.user.role);
 
   if (req.session.user.role !== 'admin' && req.session.user.id !== Number(id)) {
     return res.status(403).json({ message: 'Access denied' });
   }
+  console.debug(`Cleared adminAndCurrentUserGuard`);
   next();
 }
 

@@ -131,13 +131,37 @@ async function initializeDatabase() {
       {
         book_id: 'Lr0UDAAAQBAJ',
         user_id: 2,
-        review_text: 'Great book!',
+        review_title: 'Great book!',
+        review_text: `F. Scott Fitzgerald's "The Great Gatsby," published in 1925, remains an indelible gem in the landscape of American literature, a captivating exploration of the American Dream and the excesses of the Jazz Age. With its compelling characters, opulent settings, and intricate themes, the novel encapsulates the highs and lows of an era defined by its glamour and disillusionment.
+
+Set in the prosperous Long Island of the 1920s, "The Great Gatsby" introduces us to the enigmatic Jay Gatsby, a self-made millionaire with a shadowy past and an all-consuming love for the elusive Daisy Buchanan. Narrated by the observant and introspective Nick Carraway, the novel immerses readers in a world of lavish parties, ostentatious wealth, and unattainable desires.
+
+Fitzgerald's prose is a marvel in itself, infused with lyrical elegance that vividly brings the story's locales to life. The decadence of Gatsby's mansion, the vibrancy of the city, and the desolation of the Valley of Ashes are all described with a painterly precision that enriches the narrative's emotional impact. The characters, too, are artfully drawn, each representing a facet of the era's societal aspirations and moral decay.
+
+At its core, "The Great Gatsby" is a scathing critique of the American Dream – the notion that anyone can achieve success and happiness through hard work and determination. Through the eyes of Nick, we witness the tragic irony of Gatsby's pursuit of wealth and status in a futile attempt to recapture the past. The novel exposes the emptiness beneath the glittering facade and serves as a cautionary tale about the hollowness of materialism.
+
+The theme of unrequited love threads through the story, embodied by Gatsby's unwavering devotion to Daisy. Their tumultuous relationship becomes a symbol of the unattainable ideals that many of the characters pursue, revealing the fragility of human connections amidst a backdrop of excess and superficiality.
+
+"The Great Gatsby" endures not only for its exploration of timeless themes but also for its enduring relevance to contemporary society. The pursuit of success, the allure of wealth, and the complexities of human relationships continue to resonate with readers, making the novel as relevant today as it was nearly a century ago.
+
+In conclusion, F. Scott Fitzgerald's "The Great Gatsby" remains an iconic work of literature that unearths the complexities of the American Dream while delving into the depths of human ambition, love, and disillusionment. Its vivid portrayal of an era defined by extravagance and its poignant exploration of universal themes cement its place as an enduring classic that invites readers to peer beyond the glittering surface and contemplate the profound truths beneath.`,
         rating: 5,
       },
       {
         book_id: 'xjNtEAAAQBAJ',
         user_id: 2,
-        review_text: 'Very interesting.',
+        review_title: 'Very interesting.',
+        review_text: `"Moby-Dick," penned by Herman Melville and published in 1851, is an unassailable masterpiece that stands as an emblem of American literature. This timeless novel, which spans genres from adventure to allegory, is a profound exploration of man's innate curiosity and unyielding pursuit of the unknown.
+
+Set against the backdrop of a 19th-century whaling industry, "Moby-Dick" weaves the gripping tale of Captain Ahab's relentless quest for vengeance against the elusive white whale, Moby Dick. The narrative is steered by the introspective Ishmael, who joins the whaling vessel Pequod and becomes an astute observer of the diverse crew and their interactions. Melville delves deep into the human psyche, dissecting the complex interplay of ambition, obsession, and the hubris that drives Ahab and his crew to the brink of their own destruction.
+
+What sets "Moby-Dick" apart is its multi-layered prose, which melds maritime descriptions, philosophical musings, and vivid symbolism. Melville employs lush language to evoke the sensory experience of the sea, making readers feel the salt spray and the creaking timbers of the ship. Beneath the surface, the novel harbors allegorical interpretations that tackle themes of man's struggle against nature, the tension between individual will and destiny, and the pervasive nature of good and evil.
+
+The characters in "Moby-Dick" are not mere caricatures but embodiments of archetypes and human attributes. From the enigmatic Ahab to the jovial and tattooed Queequeg, each character represents a facet of humanity's yearnings, fears, and aspirations. Through their interactions, Melville crafts a microcosm that mirrors the broader human experience.
+
+While "Moby-Dick" was initially met with mixed critical reception, it has since evolved into a revered classic, widely studied and celebrated for its profound insights into the human condition. The novel's exploration of the clash between man and nature, its intricate character development, and its eloquent prose make it a transcendent work that resonates across generations.
+
+In conclusion, "Moby-Dick" is a literary marvel that transcends its nautical setting to explore themes of obsession, fate, and the intricacies of the human soul. Melville's masterful storytelling and layered prose ensure that this novel continues to captivate and challenge readers, inviting them to navigate the depths of its narrative and contemplate the uncharted waters of their own existence.`,
         rating: 4,
       },
     ];

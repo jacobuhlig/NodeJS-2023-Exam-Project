@@ -60,7 +60,7 @@ export const getFavorites = async (req, res) => {
     });
 
     return res.json({
-      message: 'Book added to favorites successfully',
+      message: 'Successfully retrieved all favorites',
       favorites,
     });
   } catch (error) {
@@ -136,7 +136,7 @@ export const getFavoritesByBook = async (req, res) => {
     // Count the number of favorites for the book
     const count = await Favorite.count({ where: { book_id: id } });
 
-    return res.json({ message: `Count: ${count}`, count });
+    return res.status(200).json({ message: `Count: ${count}`, count });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal server error' });

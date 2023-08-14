@@ -1,4 +1,4 @@
-import { User, Favorite } from '../database/models/index.js';
+import { User, Favorite, Review, Book } from '../database/models/index.js';
 import { comparePassword } from '../services/passwordService.js';
 import { destroySession } from '../services/sessionService.js';
 const toBeReturned = [
@@ -97,5 +97,53 @@ export const verifyPassword = async (req, res) => {
     res.status(200).json({ success: true, message: 'Password verified.' });
   } else {
     res.status(401).json({ success: false, message: 'Invalid password.' });
+  }
+};
+
+export const getReviewByUserId = async (req, res) => {
+  try {
+    const { id, bookId } = req.params;
+
+    // Check if user exists
+    const user = await User.findByPk(id, { attributes: toBeReturned });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Check if book exists
+    const book = await Book.findByPk(bookId);
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+
+    // Fetch the review for the specified book and user
+    const review = await Review.findOne({
+      where: {
+        user_id: id,
+        book_id: bookId,
+      },
+      // include: [
+      //   {
+      //     model: User,
+      //     as: 'user',
+      //     attributes: toBeReturned,
+      //   },
+      //   {
+      //     model: Book,
+      //     as: 'reviewed_book',
+      //   },
+      // ],
+    });
+
+    if (!review) {
+      return res.status(404).json({ message: 'Review not found' });
+    }
+
+    return res.status(200).json({ message: 'Review found', review: review });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: 'Internal server error', error: error.toString() });
   }
 };

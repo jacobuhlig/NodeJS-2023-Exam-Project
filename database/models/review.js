@@ -18,6 +18,10 @@ export default function (sequelize) {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      review_title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       review_text: {
         type: DataTypes.TEXT,
         allowNull: false,
